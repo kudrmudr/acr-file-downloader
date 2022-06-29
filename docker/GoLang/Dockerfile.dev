@@ -1,0 +1,7 @@
+FROM golang
+
+ENV APP_ENV dev
+
+RUN go install github.com/pilu/fresh@latest
+
+WORKDIR /go/src/
