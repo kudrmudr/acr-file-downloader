@@ -21,6 +21,7 @@ services:
             dockerfile: docker/GoLang/Dockerfile.dev
         volumes:
             - ./../client:/go/src
+            - ./../downloads:/usr/share/downloads
         environment:
             - APP_ENV=dev
             - FILE_SERVER_URL=http://acronis-server:8080
