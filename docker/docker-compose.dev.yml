@@ -9,7 +9,7 @@ services:
             dockerfile: docker/GoLang/Dockerfile.dev
         volumes:
             - ./../server:/go/src
-            - ./../fixtures:/usr/share/files
+            - ./../fixtures:/usr/share/files:ro
         command: fresh
         ports:
             - "127.0.77.1:80:8080"

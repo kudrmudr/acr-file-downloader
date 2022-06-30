@@ -1,10 +1,11 @@
 package file_links_scraper
 
 import (
-	"acronis/url_helper"
 	"github.com/PuerkitoBio/goquery"
 	"log"
 	"net/http"
+	"net/url"
+	"path"
 )
 
 func New(fileServerUrl string) FileLinksScraper {
@@ -39,8 +40,18 @@ func (scraper *FileLinksScraper) GetLinks() []string {
 	// Find the review items
 	doc.Find("body pre a").Each(func(i int, s *goquery.Selection) {
 		href, _ := s.Attr("href")
-		links = append(links, url_helper.BuildUrlBy(scraper.fileServerUrl, href))
+		links = append(links, buildUrlBy(scraper.fileServerUrl, href))
 	})
 
 	return links
+}
+
+func buildUrlBy(urlPath string, filename string) string {
+
+	u, err := url.Parse(urlPath)
+	if err != nil {
+		log.Fatal(err)
+	}
+	u.Path = path.Join(u.Path, filename)
+	return u.String()
 }

@@ -8,13 +8,13 @@ import (
 )
 
 func main() {
+	log.Println("Client Run")
 
-	log.Println("Run client")
+	mainFileLinksScraper := file_links_scraper.New(os.Getenv("FILE_SERVER_URL"))
+	mainDownloader := downloader.New("/usr/share/downloads", byte('A'))
 
-	fileLinksScraper := file_links_scraper.New(os.Getenv("FILE_SERVER_URL"))
-	downloaderService := downloader.New("/usr/share/downloads")
+	links := mainFileLinksScraper.GetLinks()
+	mainDownloader.Run(links)
 
-	for _, link := range fileLinksScraper.GetLinks() {
-		downloaderService.Download(link)
-	}
+	log.Println("Client Done")
 }
