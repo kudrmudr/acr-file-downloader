@@ -23,6 +23,7 @@ services:
             - ./../client:/go/src
         environment:
             - APP_ENV=dev
+            - FILE_SERVER_URL=http://acronis-server:8080
         command: fresh
         depends_on:
             - acronis-server
