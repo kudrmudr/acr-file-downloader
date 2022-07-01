@@ -20,10 +20,11 @@ func New(dir string, stopSymbol byte) Downloader {
 }
 
 type Downloader struct {
-	dir         string
-	stopSymbol  byte
-	minPosition *MinPosition
-	wg          *sync.WaitGroup
+	dir           string
+	stopSymbol    byte
+	minPosition   *MinPosition
+	wg            *sync.WaitGroup
+	waitSearching *sync.WaitGroup
 }
 
 func (d *Downloader) Run(links []string) {
@@ -31,6 +32,7 @@ func (d *Downloader) Run(links []string) {
 
 	d.minPosition = &MinPosition{value: math.MaxUint64}
 	d.wg = &sync.WaitGroup{}
+	d.waitSearching = &sync.WaitGroup{}
 
 	for _, link := range links {
 		d.wg.Add(1)
@@ -57,11 +59,14 @@ func (d *Downloader) download(link string) {
 
 	var position uint64
 
-	var myMinPosition uint64 = math.MaxUint64
+	isThisIt := false
+
 	isSymbolFound := false
 
+	d.waitSearching.Add(1)
+
 	for {
-		if myMinPosition != d.minPosition.Get() && position > d.minPosition.Get() {
+		if isThisIt == false && position > d.minPosition.Get() {
 			log.Println(link + " stop downloading")
 			break
 		}
@@ -79,8 +84,11 @@ func (d *Downloader) download(link string) {
 		if isSymbolFound == false && buf[:n][0] == d.stopSymbol {
 			log.Println(link + " found " + string(d.stopSymbol) + " on " + strconv.FormatUint(position, 10))
 			d.minPosition.Set(position)
-			myMinPosition = position
 			isSymbolFound = true
+			d.waitSearching.Done()
+			d.waitSearching.Wait()
+
+			isThisIt = position == d.minPosition.Get()
 		}
 
 		// write a chunk
@@ -93,7 +101,11 @@ func (d *Downloader) download(link string) {
 
 	out.Close()
 
-	if isSymbolFound == false || myMinPosition > d.minPosition.Get() {
+	if isSymbolFound == false {
+		d.waitSearching.Done()
+	}
+
+	if isThisIt == false {
 		os.Remove(fileTo)
 	}
 
