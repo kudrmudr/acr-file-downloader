@@ -12,14 +12,16 @@ import (
 	"sync"
 )
 
-func New(dir string, stopSymbol byte) Downloader {
+func New(client http.Client, dir string, stopSymbol byte) Downloader {
 	return Downloader{
+		client:     client,
 		dir:        dir,
 		stopSymbol: stopSymbol,
 	}
 }
 
 type Downloader struct {
+	client        http.Client
 	dir           string
 	stopSymbol    byte
 	minPosition   *MinPosition
@@ -52,7 +54,7 @@ func (d *Downloader) download(link string) {
 	out, _ := os.Create(fileTo)
 	defer out.Close()
 
-	response, _ := http.Get(link)
+	response, _ := d.client.Get(link)
 	defer response.Body.Close()
 
 	buf := make([]byte, 1)

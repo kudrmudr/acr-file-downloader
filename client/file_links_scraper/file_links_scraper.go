@@ -8,21 +8,22 @@ import (
 	"path"
 )
 
-func New(fileServerUrl string) FileLinksScraper {
-
+func New(client http.Client, fileServerUrl string) FileLinksScraper {
 	return FileLinksScraper{
+		client:        client,
 		fileServerUrl: fileServerUrl,
 	}
 }
 
 type FileLinksScraper struct {
+	client        http.Client
 	fileServerUrl string
 }
 
 func (scraper *FileLinksScraper) GetLinks() []string {
 	var links []string
 
-	res, err := http.Get(scraper.fileServerUrl)
+	res, err := scraper.client.Get(scraper.fileServerUrl)
 	if err != nil {
 		log.Fatal(err)
 	}
