@@ -49,6 +49,8 @@ func (d *Downloader) download(link string) {
 	log.Println("Start " + link)
 	defer d.wg.Done()
 
+	//@TODO clean download folder
+
 	fileTo := buildFilePathBy(link, d.dir)
 
 	out, _ := os.Create(fileTo)
