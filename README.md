@@ -43,7 +43,6 @@ Run tests:
 $ make test
 ```
 
-
 ## TODO
 
 - Imporve error handling and logging

@@ -68,14 +68,14 @@ func (d *Downloader) download(link string) {
 
 	var position uint64
 
-	isThisIt := false
+	shouldBeDownloaded := false
 
 	isSymbolFound := false
 
 	d.waitSearching.Add(1)
 
 	for {
-		if isThisIt == false && position > d.minPosition.Get() {
+		if shouldBeDownloaded == false && position > d.minPosition.Get() {
 			log.Println(link + " stop downloading")
 			break
 		}
@@ -97,7 +97,7 @@ func (d *Downloader) download(link string) {
 			d.waitSearching.Done()
 			d.waitSearching.Wait()
 
-			isThisIt = position == d.minPosition.Get()
+			shouldBeDownloaded = position == d.minPosition.Get()
 		}
 
 		// write a chunk
@@ -114,7 +114,7 @@ func (d *Downloader) download(link string) {
 		d.waitSearching.Done()
 	}
 
-	if isThisIt == false {
+	if shouldBeDownloaded == false {
 		os.Remove(fileTo)
 	}
 
