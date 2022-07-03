@@ -43,7 +43,7 @@ destroy:
 ### Client Commands
 
 download:
-	@$(call doco, up acronis-client )
+	@$(call do, acronis-client go run /go/src/main.go)
 
 shell:
 	@$(call do, -ti acronis-client bash)

@@ -30,6 +30,6 @@ services:
             - ./../downloads:/usr/share/downloads
         environment:
             - FILE_SERVER_URL=http://acronis-server:8080
-        command: go run /go/src/main.go
+        command: fresh
         depends_on:
             - acronis-server
