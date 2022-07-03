@@ -32,6 +32,8 @@ type Downloader struct {
 func (d *Downloader) Run(links []string) {
 	log.Println("Downloader run")
 
+	d.clean()
+
 	d.minPosition = &MinPosition{value: math.MaxUint64}
 	d.wg = &sync.WaitGroup{}
 	d.waitSearching = &sync.WaitGroup{}
@@ -45,11 +47,14 @@ func (d *Downloader) Run(links []string) {
 	log.Println("Downloader Done")
 }
 
+func (d *Downloader) clean() {
+	log.Println("Clean download folder")
+	os.RemoveAll(d.dir)
+}
+
 func (d *Downloader) download(link string) {
 	log.Println("Start " + link)
 	defer d.wg.Done()
-
-	//@TODO clean download folder
 
 	fileTo := buildFilePathBy(link, d.dir)
 

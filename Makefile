@@ -40,7 +40,10 @@ destroy:
 	@$(call doco, down)
 	@echo -e '\e[1;31mDone\e[0m'
 
-### BE Commands
+### Client Commands
+
+download:
+	@$(call doco, up acronis-client )
 
 shell:
 	@$(call do, -ti acronis-client bash)

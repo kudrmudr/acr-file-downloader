@@ -28,3 +28,6 @@
 
 server/tmp
 client/tmp
+
+downloads/*
+!downloads/.gitkeep
