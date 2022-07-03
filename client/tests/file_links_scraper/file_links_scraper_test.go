@@ -10,13 +10,12 @@ import (
 )
 
 func TestGetLinks(t *testing.T) {
-
 	expectedLinks := []string{
 		"file1",
 		"file2",
 	}
-
 	ts := EmulateFileServer(expectedLinks)
+	defer ts.Close()
 
 	mainFileLinksScraper := file_links_scraper.New(http.Client{}, ts.URL)
 
@@ -30,8 +29,8 @@ func TestGetLinks(t *testing.T) {
 }
 
 func TestGetLinksEmpty(t *testing.T) {
-
 	ts := EmulateFileServer([]string{})
+	defer ts.Close()
 
 	mainFileLinksScraper := file_links_scraper.New(http.Client{}, ts.URL)
 
