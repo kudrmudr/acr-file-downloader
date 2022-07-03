@@ -28,12 +28,10 @@ build:
 	@$(call doco, build --pull  --parallel)
 	@echo -e '\e[1;31mDone\e[0m'
 
-down:
+stop:
 	@echo -e '\e[1;31mStopping...\e[0m'
 	@$(call doco, stop)
 	@echo -e '\e[1;31mDone\e[0m'
-
-stop: down
 
 destroy:
 	@echo -e '\e[1;31mDestroying...\e[0m'

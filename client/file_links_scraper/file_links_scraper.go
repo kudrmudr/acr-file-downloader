@@ -23,7 +23,12 @@ type FileLinksScraper struct {
 func (scraper *FileLinksScraper) GetLinks() []string {
 	var links []string
 
-	res, err := scraper.client.Get(scraper.fileServerUrl)
+	request, err := http.NewRequest("GET", scraper.fileServerUrl, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	res, err := scraper.client.Do(request)
 	if err != nil {
 		log.Fatal(err)
 	}
