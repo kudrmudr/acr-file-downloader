@@ -36,7 +36,11 @@ func Node(wg *sync.WaitGroup,
 	}
 
 	filename := getBasename(link)
-	file, _ := fs.Create(filename)
+	file, err := fs.Create(filename)
+	if err != nil {
+		//@TODO Ignore or Fatal?
+		log.Fatal(err)
+	}
 
 	buf := make([]byte, 1)
 
