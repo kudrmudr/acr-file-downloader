@@ -24,7 +24,7 @@ type Downloader struct {
 func (d *Downloader) Run(links []string) {
 	log.Println("Downloader run")
 
-	d.clean()
+	d.fs.Clean()
 
 	minPosition := NewMinPosition()
 	wg := &sync.WaitGroup{}
@@ -38,9 +38,4 @@ func (d *Downloader) Run(links []string) {
 
 	wg.Wait()
 	log.Println("Downloader Done")
-}
-
-func (d *Downloader) clean() {
-	log.Println("Clean download folder")
-	d.fs.RemoveAll()
 }

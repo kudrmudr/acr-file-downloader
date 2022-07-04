@@ -47,7 +47,6 @@ $ make test
 
 - Imporve error handling and logging
 - add more unit tests
-- add functional/integration tests
 
 
 ## Assumptions 
