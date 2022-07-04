@@ -1,28 +1,34 @@
 package filesystem
 
-import "os"
+import (
+	"os"
+	"path"
+)
 
 type Filesystem interface {
 	Create(name string) (*os.File, error)
 	Remove(name string) error
-	RemoveAll(path string) error
+	RemoveAll() error
 }
 
-func New() Filesystem {
-	return filesystem{}
+func New(dir string) Filesystem {
+	return filesystem{
+		dir: dir,
+	}
 }
 
 type filesystem struct {
+	dir string
 }
 
 func (fs filesystem) Create(name string) (*os.File, error) {
-	return os.Create(name)
+	return os.Create(path.Join(fs.dir, name))
 }
 
 func (fs filesystem) Remove(name string) error {
-	return os.Remove(name)
+	return os.Remove(path.Join(fs.dir, name))
 }
 
-func (fs filesystem) RemoveAll(path string) error {
-	return os.RemoveAll(path)
+func (fs filesystem) RemoveAll() error {
+	return os.RemoveAll(fs.dir)
 }

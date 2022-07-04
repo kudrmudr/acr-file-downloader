@@ -30,6 +30,6 @@ services:
             - ./../downloads:/usr/share/downloads
         environment:
             - FILE_SERVER_URL=http://acronis-server:8080
-        command: fresh
+        command: tail -f /dev/null
         depends_on:
             - acronis-server

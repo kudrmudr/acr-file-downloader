@@ -14,9 +14,9 @@ func main() {
 
 	//DI
 	httpClient := &http.Client{}
-	fs := filesystem.New()
+	fs := filesystem.New("/usr/share/downloads")
 	mainFileLinksScraper := file_links_scraper.New(httpClient, os.Getenv("FILE_SERVER_URL"))
-	mainDownloader := downloader.New(httpClient, fs, "/usr/share/downloads", byte('A'))
+	mainDownloader := downloader.New(httpClient, fs, byte('A'))
 	//DI Done
 
 	links := mainFileLinksScraper.GetLinks()
