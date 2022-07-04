@@ -6,6 +6,6 @@ import (
 )
 
 func main() {
-	println("Run server")
+	log.Println("Run server")
 	log.Fatal(http.ListenAndServe(":8080", http.FileServer(http.Dir("/usr/share/files"))))
 }
