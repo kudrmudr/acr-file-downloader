@@ -17,8 +17,8 @@ services:
             - ./../server:/go/src
             - ./../fixtures:/usr/share/files:ro
         command: fresh
-        ports:
-            - "127.0.77.1:80:8080"
+        environment:
+            - UPLOAD_PATH=/usr/share/files
 
     acronis-client:
         container_name: acronis-client
@@ -30,6 +30,7 @@ services:
             - ./../downloads:/usr/share/downloads
         environment:
             - FILE_SERVER_URL=http://acronis-server:8080
+            - DOWNLOAD_PATH=/usr/share/downloads
         command: tail -f /dev/null
         depends_on:
             - acronis-server
