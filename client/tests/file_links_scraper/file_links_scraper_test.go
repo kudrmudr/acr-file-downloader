@@ -2,10 +2,8 @@ package file_links_scraper
 
 import (
 	"acronis/file_links_scraper"
-	"fmt"
 	"github.com/stretchr/testify/assert"
 	"net/http"
-	"net/http/httptest"
 	"testing"
 )
 
@@ -14,7 +12,7 @@ func TestGetLinks(t *testing.T) {
 		"file1",
 		"file2",
 	}
-	ts := EmulateFileServer(expectedLinks)
+	ts := FileServerEmulator(expectedLinks)
 	defer ts.Close()
 
 	mainFileLinksScraper := file_links_scraper.New(&http.Client{}, ts.URL)
@@ -29,22 +27,10 @@ func TestGetLinks(t *testing.T) {
 }
 
 func TestGetLinksEmpty(t *testing.T) {
-	ts := EmulateFileServer([]string{})
+	ts := FileServerEmulator([]string{})
 	defer ts.Close()
 
 	mainFileLinksScraper := file_links_scraper.New(&http.Client{}, ts.URL)
 
 	assert.Empty(t, mainFileLinksScraper.GetLinks())
-}
-
-func EmulateFileServer(links []string) *httptest.Server {
-	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintln(w, "<html><body><pre>")
-		for _, link := range links {
-			fmt.Fprintln(w, "<a href='"+link+"'>some name</a>")
-		}
-		fmt.Fprintln(w, "</pre></body></html>")
-	}))
-
-	return ts
 }
