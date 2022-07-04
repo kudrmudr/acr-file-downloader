@@ -4,7 +4,6 @@ import (
 	"acronis/infrastructure/filesystem"
 	"acronis/infrastructure/http_client"
 	"log"
-	"math"
 	"sync"
 )
 
@@ -27,14 +26,14 @@ func (d *Downloader) Run(links []string) {
 
 	d.clean()
 
-	minPosition := &MinPosition{value: math.MaxUint64}
+	minPosition := NewMinPosition()
 	wg := &sync.WaitGroup{}
 	waitSearching := &sync.WaitGroup{}
 
 	for _, link := range links {
 		wg.Add(1)
 		waitSearching.Add(1)
-		go Node(wg, waitSearching, link, d.httpClient, d.fs, d.searchSymbol, minPosition)
+		go Node(wg, waitSearching, link, d.httpClient, d.fs, d.searchSymbol, &minPosition)
 	}
 
 	wg.Wait()

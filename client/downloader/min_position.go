@@ -1,8 +1,13 @@
 package downloader
 
 import (
+	"math"
 	"sync"
 )
+
+func NewMinPosition() MinPosition {
+	return MinPosition{value: math.MaxUint64}
+}
 
 type MinPosition struct {
 	sync.RWMutex
