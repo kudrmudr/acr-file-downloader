@@ -17,7 +17,7 @@ func TestGetLinks(t *testing.T) {
 	ts := EmulateFileServer(expectedLinks)
 	defer ts.Close()
 
-	mainFileLinksScraper := file_links_scraper.New(http.Client{}, ts.URL)
+	mainFileLinksScraper := file_links_scraper.New(&http.Client{}, ts.URL)
 
 	links := mainFileLinksScraper.GetLinks()
 
@@ -32,7 +32,7 @@ func TestGetLinksEmpty(t *testing.T) {
 	ts := EmulateFileServer([]string{})
 	defer ts.Close()
 
-	mainFileLinksScraper := file_links_scraper.New(http.Client{}, ts.URL)
+	mainFileLinksScraper := file_links_scraper.New(&http.Client{}, ts.URL)
 
 	assert.Empty(t, mainFileLinksScraper.GetLinks())
 }

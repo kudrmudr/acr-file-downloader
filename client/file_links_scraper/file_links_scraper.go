@@ -1,6 +1,7 @@
 package file_links_scraper
 
 import (
+	"acronis/infrastructure/http_client"
 	"github.com/PuerkitoBio/goquery"
 	"log"
 	"net/http"
@@ -8,7 +9,7 @@ import (
 	"path"
 )
 
-func New(client http.Client, fileServerUrl string) FileLinksScraper {
+func New(client http_client.Client, fileServerUrl string) FileLinksScraper {
 	return FileLinksScraper{
 		client:        client,
 		fileServerUrl: fileServerUrl,
@@ -16,7 +17,7 @@ func New(client http.Client, fileServerUrl string) FileLinksScraper {
 }
 
 type FileLinksScraper struct {
-	client        http.Client
+	client        http_client.Client
 	fileServerUrl string
 }
 
